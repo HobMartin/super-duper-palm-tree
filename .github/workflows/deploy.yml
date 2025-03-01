@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -25,15 +25,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: '20'
-          cache: 'npm'
+          bun-version: latest
 
       - name: Login to Bitwarden
         id: bw-unlock
-        uses: bitwarden/sm-action@v1
+        uses: bitwarden/sm-action@v2
         with:
           access_token: ${{ secrets.BW_ACCESS_TOKEN }}
           secrets: |
@@ -43,15 +42,15 @@ jobs:
 
       - name: Create env file
         run: |
-          echo "VITE_API_URL=${{ steps.bw-unlock.outputs.VITE_API_URL }}" >> .env
-          echo "VITE_APP_TITLE=${{ steps.bw-unlock.outputs.VITE_APP_TITLE }}" >> .env
-          echo "VITE_FEATURE_FLAG=${{ steps.bw-unlock.outputs.VITE_FEATURE_FLAG }}" >> .env
+          echo "VITE_API_URL=${{ env.VITE_API_URL }}" >> .env
+          echo "VITE_APP_TITLE=${{ env.VITE_APP_TITLE }}" >> .env
+          echo "VITE_FEATURE_FLAG=${{ env.VITE_FEATURE_FLAG }}" >> .env
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install
 
       - name: Build
-        run: npm run build
+        run: bun run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -59,8 +58,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: "./dist"
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 
+        uses: actions/deploy-pages@v4
