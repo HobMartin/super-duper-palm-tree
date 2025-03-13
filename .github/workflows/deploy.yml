@@ -34,10 +34,7 @@ jobs:
         uses: ./.github/actions/bitwarden-cli
         with:
           access_token: ${{ secrets.BW_ACCESS_TOKEN }}
-
-      - name: Create env file
-        run: |
-          echo ${{env.BWS_SECRET}} >> .env
+          secret_file: .env
 
       - name: Install dependencies
         run: bun install

@@ -5,6 +5,9 @@ inputs:
   access_token:
     description: 'Bitwarden Secrets Manager access token'
     required: true
+  secret_file:
+    description: 'File to save secrets to'
+    required: true
 
 runs:
   using: 'composite'
@@ -24,4 +27,4 @@ runs:
         BWS_ACCESS_TOKEN: ${{ inputs.access_token }}
       run: |
         # List all secrets and process them into environment variables
-        bws secret list --output env >> $BWS_SECRET
+        bws secret list --output env >> ${{ inputs.secret_file }}
