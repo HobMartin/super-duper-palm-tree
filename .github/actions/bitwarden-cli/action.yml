@@ -15,7 +15,7 @@ runs:
     - name: Install Bitwarden Secrets Manager CLI
       shell: bash
       run: |
-        curl -L "https://github.com/bitwarden/sdk-sm/releases/download/bws-v1.0.0/bws-aarch64-unknown-linux-gnu-1.0.0.zip" -o bws.zip
+        curl -L "https://github.com/bitwarden/sdk-sm/releases/download/bws-v1.0.0/bws-x86_64-unknown-linux-gnu-1.0.0.zip" -o bws.zip
         unzip bws.zip
         chmod +x bws
         sudo mv bws /usr/local/bin/
