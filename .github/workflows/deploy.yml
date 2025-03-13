@@ -32,6 +32,8 @@ jobs:
 
       - name: Get Secrets
         uses: ./.github/actions/get-secrets
+        with:
+          access_token: ${{ secrets.BW_ACCESS_TOKEN }}
 
       - name: Create env file
         run: |

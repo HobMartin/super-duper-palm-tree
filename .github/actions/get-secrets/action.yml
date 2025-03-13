@@ -1,12 +1,17 @@
 name: Get Secrets
 description: Get secrets from Bitwarden
+inputs:
+  access_token:
+    required: true
+    description: 'Bitwarden access token'
+
 runs:
   using: 'composite'
   steps:
     - name: Get Secrets
       uses: bitwarden/sm-action@v2
       with:
-        access_token: ${{ secrets.BW_ACCESS_TOKEN }}
+        access_token: ${{ inputs.access_token }}
         secrets: |
           11f8921d-8251-4d7f-810a-b29301180bea > VITE_API_URL
           5db82773-4459-482c-877f-b293011820f1 > VITE_APP_TITLE
