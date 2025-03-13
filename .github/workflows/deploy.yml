@@ -31,7 +31,7 @@ jobs:
           bun-version: latest
 
       - name: Get Secrets CLI
-        uses: ./.github/actions/get-secrets-cli
+        uses: ./.github/actions/bitwarden-cli
         with:
           access_token: ${{ secrets.BW_ACCESS_TOKEN }}
 
