@@ -35,11 +35,14 @@ jobs:
         with:
           access_token: ${{ secrets.BW_ACCESS_TOKEN }}
 
+      - name: Get Secrets CLI
+        uses: ./.github/actions/get-secrets-cli
+        with:
+          access_token: ${{ secrets.BW_ACCESS_TOKEN }}
+
       - name: Create env file
         run: |
-          echo "VITE_API_URL=${{ env.VITE_API_URL }}" >> .env
-          echo "VITE_APP_TITLE=${{ env.VITE_APP_TITLE }}" >> .env
-          echo "VITE_FEATURE_FLAG=${{ env.VITE_FEATURE_FLAG }}" >> .env
+          echo ${{env.BWS_SECRET}} >> .env
 
       - name: Install dependencies
         run: bun install
