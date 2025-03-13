@@ -1,0 +1,44 @@
+name: 'Get Bitwarden Secrets'
+description: 'Retrieve secrets from Bitwarden Secrets Manager'
+
+inputs:
+  access_token:
+    description: 'Bitwarden Secrets Manager access token'
+    required: true
+  project_id:
+    description: 'Project ID to filter secrets'
+    required: true
+  secret_file:
+    description: 'File to save secrets to'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Bitwarden Secrets Manager CLI
+      shell: bash
+      run: |
+        curl -L "https://github.com/bitwarden/sdk-sm/releases/download/bws-v1.0.0/bws-x86_64-unknown-linux-gnu-1.0.0.zip" -o bws.zip
+        unzip bws.zip
+        chmod +x bws
+        sudo mv bws /usr/local/bin/
+        rm bws.zip
+
+    - name: Install jq
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y jq
+
+    - name: Get secrets and process to file
+      shell: bash
+      env:
+        BWS_ACCESS_TOKEN: ${{ inputs.access_token }}
+      run: |
+        # Get secrets in JSON format and filter by project ID
+        bws secret list --output json | \
+        jq --raw-output --arg PROJECT_ID "${{ inputs.project_id }}" '
+          .[] | 
+          select(.projectId == $PROJECT_ID) |
+          .key + "=" + (.value | @sh)
+        ' > ${{ inputs.secret_file }}

@@ -31,9 +31,10 @@ jobs:
           bun-version: latest
 
       - name: Get Secrets CLI
-        uses: ./.github/actions/bitwarden-cli
+        uses: ./.github/actions/bitwarden-cli-json
         with:
           access_token: ${{ secrets.BW_ACCESS_TOKEN }}
+          project_id: "3e5862d7-fe21-48c3-a602-b29f01590d60"
           secret_file: .env
 
       - name: Install dependencies
