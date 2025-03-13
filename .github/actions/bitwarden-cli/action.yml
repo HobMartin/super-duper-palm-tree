@@ -21,7 +21,7 @@ runs:
         sudo mv bws /usr/local/bin/
         rm bws.zip
 
-    - name: Get secrets
+    - name: Get secrets and save to file
       shell: bash
       env:
         BWS_ACCESS_TOKEN: ${{ inputs.access_token }}
